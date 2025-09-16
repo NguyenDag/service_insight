@@ -40,15 +40,11 @@ class _DeviceInfoWidgetState extends State<DeviceInfoWidget> {
 
           _buildInfoRow('Phần trăm PIN: ', '${widget.batteryLevel}%'),
 
-          SizedBox(height: 8),
-
           Slider(
             value: widget.batteryLevel.toDouble(),
             min: 0,
             max: 100,
             divisions: 100,
-            inactiveColor: Colors.lightBlue,
-            activeColor: Colors.orange,
             label: '${widget.batteryLevel}%',
             onChanged: null,
           ),
@@ -62,6 +58,9 @@ class _DeviceInfoWidgetState extends State<DeviceInfoWidget> {
           Divider(thickness: 1, color: Colors.grey),
 
           _buildInfoRow('Âm lượng: ', '${widget.volume}'),
+
+          SizedBox(height: 8),
+
           LinearProgressIndicator(
             value: widget.volume.toDouble() / 100, // từ 0.0 đến 1.0
             minHeight: 4,
