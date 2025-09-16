@@ -18,6 +18,11 @@ class AppListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[50],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.blue[200]!),
+        ),
         margin: EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,11 +31,7 @@ class AppListWidget extends StatelessWidget {
               padding: EdgeInsets.all(8),
               child: Text(
                 'Ứng dụng đã cài đặt',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800],
-                ),
+                style: TextStyle(fontSize: 18, color: Colors.black),
               ),
             ),
             Expanded(
@@ -79,45 +80,44 @@ class AppListWidget extends StatelessWidget {
 
   Widget _buildAppListItem(BuildContext context, AppInfo app) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
       elevation: 2,
-      child: ListTile(
-        leading:
-            app.icon != null
-                ? ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.memory(
-                    app.icon!,
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: ListTile(
+          leading:
+              app.icon != null
+                  ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.memory(
+                      app.icon!,
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                  : Container(
                     width: 40,
                     height: 40,
-                    fit: BoxFit.cover,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.android, size: 24, color: Colors.grey[600]),
                   ),
-                )
-                : Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(Icons.android, size: 24, color: Colors.grey[600]),
-                ),
-        title: Text(
-          app.name,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          title: Text(
+            app.name,
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: Text(
+            DeviceInfoService.formatUsageTime(app.usageTime),
+            style: TextStyle(color: Colors.grey[600], fontSize: 12),
+          ),
+          onTap: () => onAppTap(app.packageName),
         ),
-        subtitle: Text(
-          'Thời gian sử dụng hôm nay: ${DeviceInfoService.formatUsageTime(app.usageTime)}',
-          style: TextStyle(color: Colors.grey[600], fontSize: 12),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios,
-          size: 16,
-          color: Colors.grey[400],
-        ),
-        onTap: () => onAppTap(app.packageName),
       ),
     );
   }

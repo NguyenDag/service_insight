@@ -69,6 +69,19 @@ class MainActivity: FlutterActivity() {
     private fun getDeviceName(): String {
         return Settings.Global.getString(contentResolver, "device_name")
             ?: "${Build.MANUFACTURER} ${Build.MODEL}"
+        /*return try{
+            val manufacturer = Build.MANUFACTURER
+            val model = Build.MODEL
+
+            if (model.lowercase().startsWith(manufacturer.lowercase())) {
+                model.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+            } else {
+                "${manufacturer.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} $model"
+            }
+        }catch (e: Exception){
+            Log.e("MainActivity", "Lỗi khi lấy tên thiết bị: ${e.message}")
+            "Unknown Device"
+        }*/
     }
 
     private fun getBatteryLevel(): Int {
@@ -139,7 +152,7 @@ class MainActivity: FlutterActivity() {
         }
 
         // Sort by app name
-        return apps.sortedBy { it["name"] as String }
+        return apps.sortedByDescending { it["usageTime"] as Long }
     }
 
     private fun getUsageStats(): Map<String, Long> {

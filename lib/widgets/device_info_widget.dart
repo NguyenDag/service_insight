@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DeviceInfoWidget extends StatelessWidget {
+class DeviceInfoWidget extends StatefulWidget {
   final String deviceName;
   final int batteryLevel;
   final int brightness;
@@ -15,62 +15,70 @@ class DeviceInfoWidget extends StatelessWidget {
   });
 
   @override
+  State<StatefulWidget> createState() => _DeviceInfoWidgetState();
+}
+
+class _DeviceInfoWidgetState extends State<DeviceInfoWidget> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.blue[50],
+        color: Colors.grey[50],
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.blue[200]!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Thông tin thiết bị',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue[800],
-            ),
-          ),
-          SizedBox(height: 12),
-          _buildInfoRow(
-            Icons.phone_android,
-            Colors.blue[600]!,
-            'Tên thiết bị: $deviceName',
-          ),
+          _buildInfoRow('Tên thiết bị: ', widget.deviceName),
+
           SizedBox(height: 8),
-          _buildInfoRow(
-            Icons.battery_full,
-            Colors.green[600]!,
-            'Pin: $batteryLevel%',
-          ),
+          Divider(thickness: 1, color: Colors.grey),
           SizedBox(height: 8),
-          _buildInfoRow(
-            Icons.brightness_6,
-            Colors.orange[600]!,
-            'Độ sáng: $brightness%',
-          ),
+
+          _buildInfoRow('Phần trăm PIN: ', '${widget.batteryLevel}%'),
+
           SizedBox(height: 8),
-          _buildInfoRow(
-            Icons.volume_up,
-            Colors.purple[600]!,
-            'Âm lượng: $volume%',
+
+          Slider(
+            value: widget.batteryLevel.toDouble(),
+            min: 0,
+            max: 100,
+            divisions: 100,
+            inactiveColor: Colors.lightBlue,
+            activeColor: Colors.orange,
+            label: '${widget.batteryLevel}%',
+            onChanged: null,
           ),
+
+          Divider(thickness: 1, color: Colors.grey),
+          SizedBox(height: 8),
+
+          _buildInfoRow('Độ sáng màn hình: ', '${widget.brightness}%'),
+
+          SizedBox(height: 8),
+          Divider(thickness: 1, color: Colors.grey),
+
+          _buildInfoRow('Âm lượng: ', '${widget.volume}'),
+          LinearProgressIndicator(
+            value: widget.volume.toDouble() / 100, // từ 0.0 đến 1.0
+            minHeight: 4,
+            backgroundColor: Colors.grey[200],
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[500]!),
+          ),
+
+          SizedBox(height: 8),
         ],
       ),
     );
   }
 
-  Widget _buildInfoRow(IconData icon, Color iconColor, String text) {
+  Widget _buildInfoRow(String label, String text) {
     return Row(
-      children: [
-        Icon(icon, color: iconColor),
-        SizedBox(width: 8),
-        Expanded(child: Text(text)),
-      ],
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [Text(label), Text(text)],
     );
   }
 }
